@@ -5,64 +5,45 @@
 #define NUM_THREAD 4
 #define ADD_NUM 100000
 
-/* 共有データ */
-long long sum = 0;
+#include <stdlib.h>
+#include <pthread.h>
 
-/* スレッドに渡すデータ */
-typedef struct thread_data
-{
-	int addNum;
-	int fork[200];
-} THREAD_DATA;
+// 構造体の定義
+// 初期化関数
+// スレッド作成関数
+// 哲学者のライフサイクル関数
 
-void* add(void *arg)
-{
-	int i;
-	THREAD_DATA *data = (THREAD_DATA*)arg;;
+int main(int argc, char **argv) {
+    if (argc < 5) {
+        // 引数が不足している場合のエラーハンドリング
+        return 1;
+    }
 
-	/* addNum回 sum = sum + 1 を実行 */
-	for(i = 0; i < data->addNum; i++)
-	{
-		pthread_mutex_lock(&mutex);
-		sum = sum + 1;
-		pthread_mutex_unlock(&mutex);
-	}
+    int number_of_philosophers = atoi(argv[1]);
+    int time_to_die = atoi(argv[2]);
+    int time_to_eat = atoi(argv[3]);
+    int time_to_sleep = atoi(argv[4]);
 
-	return NULL;
+    t_philosopher *philosophers = malloc(number_of_philosophers * sizeof(t_philosopher));
+    t_fork *forks = malloc(number_of_philosophers * sizeof(t_fork));
+
+    initialize_philosophers_and_forks(philosophers, forks, number_of_philosophers);
+
+    for (int i = 0; i < number_of_philosophers; i++) {
+        philosophers[i].time_to_die = time_to_die;
+        philosophers[i].time_to_eat = time_to_eat;
+        philosophers[i].time_to_sleep = time_to_sleep;
+    }
+
+    create_philosopher_threads(philosophers, number_of_philosophers);
+
+    for (int i = 0; i < number_of_philosophers; i++) {
+        pthread_join(philosophers[i].thread, NULL);
+    }
+
+    free(philosophers);
+    free(forks);
+
+    return 0;
 }
 
-int main(void){
-	pthread_t thread[NUM_THREAD];
-	THREAD_DATA data[NUM_THREAD];
-	int i;
-	pthred_mutex_t	mutexs[200];
-
-	for (i = 0; i < 200; i++)
-	{
-		pthread_mutex_init(&mutex[i], NULL);//Mutexオブジェクトの作成
-	}
-	for(i = 0; i < NUM_THREAD; i++)
-	{
-		data[i].addNum = ADD_NUM / NUM_THREAD;
-	}
-
-	/* スレッドの開始 */
-	for(i = 0; i < NUM_THREAD; i++)
-	{
-		pthread_create(&thread[i], NULL, add, &data[i]);
-	}
-
-	/* スレッドの終了待ち */
-	for(i = 0; i < NUM_THREAD; i++)
-	{
-		pthread_join(thread[i], NULL);
-	}
-
-	/* Mutexオブジェクトの破棄 */
-	pthread_mutex_destroy(&mutex);
-
-	/* 計算結果の表示 */
-	printf("sum = %lld\n", sum);
-
-	return 0;
-}
