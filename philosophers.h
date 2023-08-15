@@ -12,10 +12,11 @@
 
 typedef struct s_philo
 {
-	int	philo_num;
+	struct s_data	*data;
+	int	num;
 	time_t	last_eat;
 	int	eat_time;
-	pthread_t	philo_thread;
+	pthread_t	thread;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
 }	t_philo;
@@ -26,10 +27,13 @@ typedef struct s_data
 	time_t	die_time;
 	time_t	eat_time;
 	time_t	sleep_time;
+	time_t	start_time;
 	int	eat_num;
+	bool	counter;
 	t_philo philo[200];
 	pthread_mutex_t m_philo[200];
 	pthread_mutex_t	fork[200];
+	pthread_mutex_t	print;
 }	t_data;
 
 #endif
