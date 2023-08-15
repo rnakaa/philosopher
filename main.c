@@ -1,49 +1,133 @@
-#include <pthread.h>
-#include <pthread.h>
 #include <stdio.h>
-#include <unistd.h>
-#define NUM_THREAD 4
-#define ADD_NUM 100000
-
 #include <stdlib.h>
 #include <pthread.h>
+#include <sys/time.h>
+#include <unistd.h>
+#include <stdbool.h>
+#include "philosophers.h"
 
-// 構造体の定義
-// 初期化関数
-// スレッド作成関数
-// 哲学者のライフサイクル関数
-
-int main(int argc, char **argv) {
-    if (argc < 5) {
-        // 引数が不足している場合のエラーハンドリング
-        return 1;
-    }
-
-    int number_of_philosophers = atoi(argv[1]);
-    int time_to_die = atoi(argv[2]);
-    int time_to_eat = atoi(argv[3]);
-    int time_to_sleep = atoi(argv[4]);
-
-    t_philosopher *philosophers = malloc(number_of_philosophers * sizeof(t_philosopher));
-    t_fork *forks = malloc(number_of_philosophers * sizeof(t_fork));
-
-    initialize_philosophers_and_forks(philosophers, forks, number_of_philosophers);
-
-    for (int i = 0; i < number_of_philosophers; i++) {
-        philosophers[i].time_to_die = time_to_die;
-        philosophers[i].time_to_eat = time_to_eat;
-        philosophers[i].time_to_sleep = time_to_sleep;
-    }
-
-    create_philosopher_threads(philosophers, number_of_philosophers);
-
-    for (int i = 0; i < number_of_philosophers; i++) {
-        pthread_join(philosophers[i].thread, NULL);
-    }
-
-    free(philosophers);
-    free(forks);
-
-    return 0;
+void	set_fork(t_data *data, t_philo *philo, int i)
+{
+	if (i % 2)
+	{
+		philo->right_fork = &data->fork[i];
+		if (i == data->num - 1)
+			philo->left_fork = &data->fork[0]; 
+		else
+			philo->left_fork = &data->fork[i + 1];
+	}
+	else
+	{
+		philo->left_fork = &data->fork[i];
+		if (i == data->num - 1)
+			philo->right_fork = &data->fork[0];
+		else
+			philo->right_fork = &data->fork[i + 1];
+	}
 }
 
+void	reset(t_data *data)
+{
+	int	i;
+	
+	i = 0;
+	while (i < data->num)
+		pthread_mutex_init(&data->fork[i++], NULL);
+	i = 0;
+	pthread_mutex_init(&data->print);
+	while (i < data->num)
+	{
+		data->philo[i].num = i;
+		pthread_mutex_init(&data->m_philo[i], NULL);
+		data->philo[i].eat_time = 0;
+		set_fork(data, &data->philo[i], i);
+		i++;
+	}
+}
+
+time_t	now_time()
+{
+	struct timeval time;
+
+	gettimeofday(&time, NULL);
+	return (time.tv_sec*1000 + time.tv_usec/1000);
+}
+
+void	printmessage(t_data *data, t_philo *philo, int i, char *str)
+{
+	time_t	now;
+
+	now = now_time();
+	pthread_mutex_lock(&data->print);
+	printf("%d %d %s\n", (int)data->start_time - now, i, str);
+	pthread_mutex_unlock(&data->print);
+}
+
+void	take_fork(t_data *data, t_philo *philo)
+{
+	
+}
+void	philoeat(t_data *data, t_philo *philo)
+{
+	time_t	start;
+
+	start = now_time();
+	take_fork(data, philo);
+	
+}
+
+void	philosleep(t_data *data, t_philo *philo)
+{
+	
+}
+
+void	philothink(t_data *data, t_philo *philo)
+{
+	
+}
+
+void	philo_job(t_data *data, t_philo *philo)
+{
+	while (true)
+	{
+		philoeat(data, philo);
+		philosleep(data, philo);
+		philothink(data, philo);
+	}
+}
+
+
+void	philo_thread(t_data *data)
+{
+	int	i;
+	t_philo	*philo;
+
+	i = 0;
+	data->start_time = now_time();
+	while (i < data->num)
+	{
+		philo = &data->philo[i].thread;
+		pthread_creat(philo, NULL, philo_job, data, philo);
+			
+		i++;
+	}
+	i = 0;
+	while (i < data->num)
+	{
+		pthread_join(data->philo[i].thread, NULL);
+		i++;
+	}
+}
+
+int	main(int argc, char **argv)
+{
+	t_data	data;
+	data.num = atoi(argv[1]); 
+	data.die_time = atoi(argv[2]);
+	data.eat_time = atoi(argv[3]);
+	data.sleep_time = atoi(argv[4]);
+	if(argc == 5)
+		data.eat_num = atoi(argv[5]);
+	reset(&data);
+	philo_thread(data);
+}
