@@ -59,7 +59,7 @@ void	printmessage(t_data *data, t_philo *philo, char *str)
 
 	now = now_time();
 	pthread_mutex_lock(&data->print);
-	printf("%ld %d %s\n", (int)data->start_time - now, philo->num + 1, str);
+	printf("%ld %d %s\n", now - data->start_time, philo->num + 1, str);
 	pthread_mutex_unlock(&data->print);
 }
 
@@ -90,9 +90,8 @@ void	philoeat(t_data *data, t_philo *philo)
 	pthread_mutex_lock(&data->m_philo[i]);
 	philo->last_eat = start;
 	pthread_mutex_unlock(&data->m_philo[i]);
-	wait_time = data->eat_time - (now_time() - start);
-	if (wait_time > 0)
-		usleep(wait_time * 1000);
+	while (now_time() - start < data->eat_time)
+		usleep(100);
 	if (data->counter)
 	{
 		pthread_mutex_lock(&data->m_philo[i]);
@@ -104,12 +103,12 @@ void	philoeat(t_data *data, t_philo *philo)
 
 void	philosleep(t_data *data, t_philo *philo)
 {
-	int	wait_time;
+	time_t	start;
 
+	start = now_time();
 	printmessage(data, philo, "is sleeping");
-	wait_time = data->sleep_time;
-	if (wait_time > 0)
-		usleep(wait_time * 1000);
+	while (now_time() - start < data->sleep_time)
+		usleep(100);
 }
 
 void	philothink(t_data *data, t_philo *philo)
@@ -125,6 +124,8 @@ void	*philo_job(void *arg)
 
 	philo = (t_philo *)arg;
 	data = philo->data;
+	if (philo->num % 2)
+		usleep(100);
 	while (true)
 	{
 		philoeat(data, philo);
@@ -160,10 +161,12 @@ int	main(int argc, char **argv)
 	data.die_time = atoi(argv[2]);
 	data.eat_time = atoi(argv[3]);
 	data.sleep_time = atoi(argv[4]);
-	if(argc == 5)
+	data.counter = false;
+	if(argc == 6)
 	{
 		data.counter = true;
 		data.eat_num = atoi(argv[5]);
+		printf("%d\n", atoi(argv[5]));
 	}
 	reset(&data);
 	philo_thread(&data);
