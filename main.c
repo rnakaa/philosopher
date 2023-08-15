@@ -1,68 +1,133 @@
-#include <pthread.h>
-#include <pthread.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <sys/time.h>
 #include <unistd.h>
-#define NUM_THREAD 4
-#define ADD_NUM 100000
+#include <stdbool.h>
+#include "philosophers.h"
 
-/* 共有データ */
-long long sum = 0;
-
-/* スレッドに渡すデータ */
-typedef struct thread_data
+void	set_fork(t_data *data, t_philo *philo, int i)
 {
-	int addNum;
-	int fork[200];
-} THREAD_DATA;
-
-void* add(void *arg)
-{
-	int i;
-	THREAD_DATA *data = (THREAD_DATA*)arg;;
-
-	/* addNum回 sum = sum + 1 を実行 */
-	for(i = 0; i < data->addNum; i++)
+	if (i % 2)
 	{
-		pthread_mutex_lock(&mutex);
-		sum = sum + 1;
-		pthread_mutex_unlock(&mutex);
+		philo->right_fork = &data->fork[i];
+		if (i == data->num - 1)
+			philo->left_fork = &data->fork[0]; 
+		else
+			philo->left_fork = &data->fork[i + 1];
 	}
-
-	return NULL;
+	else
+	{
+		philo->left_fork = &data->fork[i];
+		if (i == data->num - 1)
+			philo->right_fork = &data->fork[0];
+		else
+			philo->right_fork = &data->fork[i + 1];
+	}
 }
 
-int main(void){
-	pthread_t thread[NUM_THREAD];
-	THREAD_DATA data[NUM_THREAD];
-	int i;
-	pthred_mutex_t	mutexs[200];
-
-	for (i = 0; i < 200; i++)
+void	reset(t_data *data)
+{
+	int	i;
+	
+	i = 0;
+	while (i < data->num)
+		pthread_mutex_init(&data->fork[i++], NULL);
+	i = 0;
+	pthread_mutex_init(&data->print);
+	while (i < data->num)
 	{
-		pthread_mutex_init(&mutex[i], NULL);//Mutexオブジェクトの作成
+		data->philo[i].num = i;
+		pthread_mutex_init(&data->m_philo[i], NULL);
+		data->philo[i].eat_time = 0;
+		set_fork(data, &data->philo[i], i);
+		i++;
 	}
-	for(i = 0; i < NUM_THREAD; i++)
+}
+
+time_t	now_time()
+{
+	struct timeval time;
+
+	gettimeofday(&time, NULL);
+	return (time.tv_sec*1000 + time.tv_usec/1000);
+}
+
+void	printmessage(t_data *data, t_philo *philo, int i, char *str)
+{
+	time_t	now;
+
+	now = now_time();
+	pthread_mutex_lock(&data->print);
+	printf("%d %d %s\n", (int)data->start_time - now, i, str);
+	pthread_mutex_unlock(&data->print);
+}
+
+void	take_fork(t_data *data, t_philo *philo)
+{
+	
+}
+void	philoeat(t_data *data, t_philo *philo)
+{
+	time_t	start;
+
+	start = now_time();
+	take_fork(data, philo);
+	
+}
+
+void	philosleep(t_data *data, t_philo *philo)
+{
+	
+}
+
+void	philothink(t_data *data, t_philo *philo)
+{
+	
+}
+
+void	philo_job(t_data *data, t_philo *philo)
+{
+	while (true)
 	{
-		data[i].addNum = ADD_NUM / NUM_THREAD;
+		philoeat(data, philo);
+		philosleep(data, philo);
+		philothink(data, philo);
 	}
+}
 
-	/* スレッドの開始 */
-	for(i = 0; i < NUM_THREAD; i++)
+
+void	philo_thread(t_data *data)
+{
+	int	i;
+	t_philo	*philo;
+
+	i = 0;
+	data->start_time = now_time();
+	while (i < data->num)
 	{
-		pthread_create(&thread[i], NULL, add, &data[i]);
+		philo = &data->philo[i].thread;
+		pthread_creat(philo, NULL, philo_job, data, philo);
+			
+		i++;
 	}
-
-	/* スレッドの終了待ち */
-	for(i = 0; i < NUM_THREAD; i++)
+	i = 0;
+	while (i < data->num)
 	{
-		pthread_join(thread[i], NULL);
+		pthread_join(data->philo[i].thread, NULL);
+		i++;
 	}
+}
 
-	/* Mutexオブジェクトの破棄 */
-	pthread_mutex_destroy(&mutex);
-
-	/* 計算結果の表示 */
-	printf("sum = %lld\n", sum);
-
-	return 0;
+int	main(int argc, char **argv)
+{
+	t_data	data;
+	data.num = atoi(argv[1]); 
+	data.die_time = atoi(argv[2]);
+	data.eat_time = atoi(argv[3]);
+	data.sleep_time = atoi(argv[4]);
+	if(argc == 5)
+		data.eat_num = atoi(argv[5]);
+	reset(&data);
+	philo_thread(data);
 }
