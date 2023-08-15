@@ -30,8 +30,10 @@ typedef struct s_data
 	time_t	start_time;
 	int	eat_num;
 	bool	counter;
+	bool	stop;
 	t_philo philo[200];
-	pthread_mutex_t m_philo[200];
+	pthread_mutex_t	finish;
+	pthread_mutex_t	m_philo[200];
 	pthread_mutex_t	fork[200];
 	pthread_mutex_t	print;
 }	t_data;

@@ -2,7 +2,7 @@ NAME	= philosophers
 
 CC	= gcc
 
-#CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= #-fsanitize=thread#-Wall -Wextra -Werror
 
 INC	= -I./philospphers.h
 
@@ -21,7 +21,7 @@ $(OBJ_DIR)/%.o: %.c
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS)	-o $(NAME) $(OBJS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
 
 clean:
 	$(RM) $(OBJS)
