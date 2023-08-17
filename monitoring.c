@@ -54,7 +54,7 @@ void	*monitor(void *arg)
 	{
 		if (check(data))
 			return NULL;
-		if (num_eat(data))
+		if (data->counter && num_eat(data))
 		{
 			pthread_mutex_lock(&data->finish);
 			data->stop = true;

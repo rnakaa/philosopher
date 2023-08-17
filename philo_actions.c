@@ -2,16 +2,15 @@
 
 int philoeat(t_data *data, t_philo *philo)
 {
-    time_t start;
-    int i;
-    int wait_time;
+    time_t	start;
+    int		i;
 
     i = philo->num;
     if (take_fork(data, philo))
         return (true);
     if (printmessage(data, philo, "is eating"))
     {
-        drop_fork(data, philo);
+        drop_fork(philo);
         return (true);
     }
     start = now_time();
@@ -26,7 +25,7 @@ int philoeat(t_data *data, t_philo *philo)
         philo->eat_time++;
         pthread_mutex_unlock(&data->m_philo[i]);
     }
-    drop_fork(data, philo);
+    drop_fork(philo);
     return (false);
 }
 

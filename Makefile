@@ -2,7 +2,7 @@ NAME	= philosophers
 
 CC	= gcc
 
-CFLAGS	= -fsanitize=thread -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror
 
 INC	= -I.
 
@@ -12,11 +12,13 @@ OBJS	= $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 RM	= rm -rf
 
-SRCS	= main.c	\
-	philo_init.c	\
-	philo_utils.c	\
-	philo_actions.c	\
-	philo_monitor.c
+SRCS	=	fork_actions.c	\
+		initialization.c	\
+		main.c	\
+		message_utils.c	\
+		monitoring.c	\
+		philo_actions.c	\
+		time_utils.c
 
 all:	$(NAME)
 

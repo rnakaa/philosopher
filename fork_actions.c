@@ -38,7 +38,7 @@ int	take_fork(t_data *data, t_philo *philo)
 	return (false);
 }
 
-void	drop_fork(t_data *data, t_philo *philo)
+void	drop_fork(t_philo *philo)
 {
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);

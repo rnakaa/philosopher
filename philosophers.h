@@ -43,7 +43,7 @@ time_t	now_time();
 void	reset(t_data *data);
 int	printmessage(t_data *data, t_philo *philo, char *str);
 int	take_fork(t_data *data, t_philo *philo);
-void	drop_fork(t_data *data, t_philo *philo);
+void	drop_fork(t_philo *philo);
 int	philoeat(t_data *data, t_philo *philo);
 int	philosleep(t_data *data, t_philo *philo);
 int	philothink(t_data *data, t_philo *philo);
