@@ -38,4 +38,19 @@ typedef struct s_data
 	pthread_mutex_t	print;
 }	t_data;
 
+void	set_fork(t_data *data, t_philo *philo, int i);
+time_t	now_time();
+void	reset(t_data *data);
+int	printmessage(t_data *data, t_philo *philo, char *str);
+int	take_fork(t_data *data, t_philo *philo);
+void	drop_fork(t_data *data, t_philo *philo);
+int	philoeat(t_data *data, t_philo *philo);
+int	philosleep(t_data *data, t_philo *philo);
+int	philothink(t_data *data, t_philo *philo);
+void	*philo_job(void *arg);
+int	check(t_data *data);
+bool	num_eat(t_data *data);
+void	*monitor(void *arg);
+void	philo_thread(t_data *data);
+
 #endif

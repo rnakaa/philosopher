@@ -2,9 +2,9 @@ NAME	= philosophers
 
 CC	= gcc
 
-CFLAGS	= #-fsanitize=thread#-Wall -Wextra -Werror
+CFLAGS	= -fsanitize=thread -Wall -Wextra -Werror
 
-INC	= -I./philospphers.h
+INC	= -I.
 
 OBJ_DIR	= obj
 
@@ -12,7 +12,11 @@ OBJS	= $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 RM	= rm -rf
 
-SRCS	= main.c
+SRCS	= main.c	\
+	philo_init.c	\
+	philo_utils.c	\
+	philo_actions.c	\
+	philo_monitor.c
 
 all:	$(NAME)
 
