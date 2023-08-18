@@ -6,7 +6,7 @@
 /*   By: rnaka <rnaka@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 23:02:48 by rnaka             #+#    #+#             */
-/*   Updated: 2023/08/18 23:06:05 by rnaka            ###   ########.fr       */
+/*   Updated: 2023/08/19 01:59:53 by rnaka            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,6 @@ bool	num_eat(t_data *data);
 void	*monitor(void *arg);
 void	philo_thread(t_data *data);
 time_t	now_time(void);
+void	destroy_all(t_data *data);
 
 #endif

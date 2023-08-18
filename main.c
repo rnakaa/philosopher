@@ -6,7 +6,7 @@
 /*   By: rnaka <rnaka@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 23:01:57 by rnaka             #+#    #+#             */
-/*   Updated: 2023/08/18 23:15:33 by rnaka            ###   ########.fr       */
+/*   Updated: 2023/08/19 01:52:44 by rnaka            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	check_arguments(int argc, char **argv)
 		return (1);
 	if (argc == 6 && !ft_atoi(argv[5]))
 		return (1);
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -82,5 +83,6 @@ int	main(int argc, char **argv)
 	}
 	reset(&data);
 	philo_thread(&data);
+	destroy_all(&data);
 	return (1);
 }
