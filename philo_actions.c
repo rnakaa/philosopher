@@ -6,7 +6,7 @@
 /*   By: rnaka <rnaka@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 23:02:09 by rnaka             #+#    #+#             */
-/*   Updated: 2023/08/18 23:24:47 by rnaka            ###   ########.fr       */
+/*   Updated: 2023/08/19 01:34:50 by rnaka            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ void	*philo_job(void *arg)
 {
 	t_philo	*philo;
 	t_data	*data;
-	time_t	now;
 
 	philo = (t_philo *)arg;
 	data = philo->data;
@@ -109,7 +108,6 @@ void	*philo_job(void *arg)
 		usleep(100);
 	while (true)
 	{
-		now = now_time();
 		if (philoeat(data, philo))
 			return (NULL);
 		if (philosleep(data, philo))

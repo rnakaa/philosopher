@@ -6,7 +6,7 @@
 /*   By: rnaka <rnaka@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 23:01:39 by rnaka             #+#    #+#             */
-/*   Updated: 2023/08/18 23:16:12 by rnaka            ###   ########.fr       */
+/*   Updated: 2023/08/19 01:46:12 by rnaka            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ void	set_fork(t_data *data, t_philo *philo, int i)
 int	take_fork(t_data *data, t_philo *philo)
 {
 	pthread_mutex_lock(philo->right_fork);
+	if (data->num == 1)
+	{
+		printmessage(data, philo, "has taken a fork");
+		pthread_mutex_unlock(philo->right_fork);
+		usleep(1000 * (now_time() - data->start_time));
+		return (true);
+	}
 	if (printmessage(data, philo, "has taken a fork"))
 	{
 		pthread_mutex_unlock(philo->right_fork);
