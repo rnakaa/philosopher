@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fork_actions.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rnaka <rnaka@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/18 23:01:39 by rnaka             #+#    #+#             */
+/*   Updated: 2023/08/18 23:16:12 by rnaka            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 void	set_fork(t_data *data, t_philo *philo, int i)
@@ -6,7 +18,7 @@ void	set_fork(t_data *data, t_philo *philo, int i)
 	{
 		philo->right_fork = &data->fork[i];
 		if (i == data->num - 1)
-			philo->left_fork = &data->fork[0]; 
+			philo->left_fork = &data->fork[0];
 		else
 			philo->left_fork = &data->fork[i + 1];
 	}
@@ -43,4 +55,3 @@ void	drop_fork(t_philo *philo)
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
 }
-

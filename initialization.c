@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   initialization.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rnaka <rnaka@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/18 23:01:54 by rnaka             #+#    #+#             */
+/*   Updated: 2023/08/18 23:15:58 by rnaka            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include"philosophers.h"
 
 void	reset(t_data *data)
 {
 	int	i;
-	
+
 	i = 0;
 	while (i < data->num)
 		pthread_mutex_init(&data->fork[i++], NULL);
@@ -24,7 +36,7 @@ void	reset(t_data *data)
 
 void	philo_thread(t_data *data)
 {
-	int	i;
+	int			i;
 	pthread_t	thread_monitor;
 
 	i = 0;
@@ -32,7 +44,8 @@ void	philo_thread(t_data *data)
 	while (i < data->num)
 	{
 		data->philo[i].data = data;
-		pthread_create(&data->philo[i].thread, NULL, philo_job, &data->philo[i]);
+		pthread_create(&data->philo[i].thread,
+			NULL, philo_job, &data->philo[i]);
 		i++;
 	}
 	pthread_create(&thread_monitor, NULL, monitor, data);
@@ -44,5 +57,3 @@ void	philo_thread(t_data *data)
 	}
 	pthread_join(thread_monitor, NULL);
 }
-
-

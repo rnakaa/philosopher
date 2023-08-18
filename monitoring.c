@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   monitoring.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rnaka <rnaka@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/18 23:02:07 by rnaka             #+#    #+#             */
+/*   Updated: 2023/08/18 23:12:57 by rnaka            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include"philosophers.h"
 
 int	check(t_data *data)
@@ -30,7 +42,7 @@ int	check(t_data *data)
 bool	num_eat(t_data *data)
 {
 	int	i;
-	
+
 	i = 0;
 	while (i < data->num)
 	{
@@ -48,12 +60,13 @@ bool	num_eat(t_data *data)
 
 void	*monitor(void *arg)
 {
-	t_data *data = (t_data *)arg;
+	t_data	*data;
 
+	data = (t_data *)arg;
 	while (true)
 	{
 		if (check(data))
-			return NULL;
+			return (NULL);
 		if (data->counter && num_eat(data))
 		{
 			pthread_mutex_lock(&data->finish);
@@ -62,5 +75,5 @@ void	*monitor(void *arg)
 			break ;
 		}
 	}
-	return NULL;
+	return (NULL);
 }
