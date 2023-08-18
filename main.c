@@ -1,10 +1,17 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <sys/time.h>
-#include <unistd.h>
-#include <stdbool.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rnaka <rnaka@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/18 23:01:57 by rnaka             #+#    #+#             */
+/*   Updated: 2023/08/18 23:15:33 by rnaka            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
+
 int	is_arg_num(char *argv)
 {
 	int	i;
@@ -18,37 +25,40 @@ int	is_arg_num(char *argv)
 	}
 	return (0);
 }
+
 int	ft_atoi(const char *str)
 {
-	int	result;
-	int	i;
+	int		result;
+	int		i;
 	char	c;
 
 	if (!str)
-	    return 0;
+		return (0);
 	i = 0;
 	result = 0;
 	while (str[i] != '\0')
 	{
 		c = str[i];
-		if (result > INT_MAX / 10 || (result == INT_MAX / 10 && c - '0' > INT_MAX % 10))
-			return 0;
+		if (result > INT_MAX / 10
+			|| (result == INT_MAX / 10 && c - '0' > INT_MAX % 10))
+			return (0);
 		result = result * 10 + (str[i] - '0');
 		i++;
 	}
-	return result;
+	return (result);
 }
-
 
 int	check_arguments(int argc, char **argv)
 {
 	if (argc != 5 && argc != 6)
 		return (1);
-	if (is_arg_num(argv[1]) || is_arg_num(argv[2]) || is_arg_num(argv[3]) || is_arg_num(argv[4]))
+	if (is_arg_num(argv[1]) || is_arg_num(argv[2])
+		||is_arg_num(argv[3]) || is_arg_num(argv[4]))
 		return (1);
 	if (argc == 6 && is_arg_num(argv[5]))
 		return (1);
-	if (!ft_atoi(argv[2]) || !ft_atoi(argv[3]) || !ft_atoi(argv[4]) || !ft_atoi(argv[1]) || ft_atoi(argv[1]) > 200)
+	if (!ft_atoi(argv[2]) || !ft_atoi(argv[3])
+		|| !ft_atoi(argv[4]) || !ft_atoi(argv[1]) || ft_atoi(argv[1]) > 200)
 		return (1);
 	if (argc == 6 && !ft_atoi(argv[5]))
 		return (1);
@@ -65,7 +75,7 @@ int	main(int argc, char **argv)
 	data.eat_time = ft_atoi(argv[3]);
 	data.sleep_time = ft_atoi(argv[4]);
 	data.counter = false;
-	if(argc == 6)
+	if (argc == 6)
 	{
 		data.counter = true;
 		data.eat_num = ft_atoi(argv[5]);

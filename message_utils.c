@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   message_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rnaka <rnaka@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/18 23:02:05 by rnaka             #+#    #+#             */
+/*   Updated: 2023/08/18 23:16:54 by rnaka            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include"philosophers.h"
 
 int	printmessage(t_data *data, t_philo *philo, char *str)
@@ -18,4 +30,3 @@ int	printmessage(t_data *data, t_philo *philo, char *str)
 	pthread_mutex_unlock(&data->print);
 	return (false);
 }
-
