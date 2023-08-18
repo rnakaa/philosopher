@@ -6,7 +6,7 @@
 /*   By: rnaka <rnaka@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 23:02:09 by rnaka             #+#    #+#             */
-/*   Updated: 2023/08/19 01:34:50 by rnaka            ###   ########.fr       */
+/*   Updated: 2023/08/19 01:49:46 by rnaka            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,37 +46,6 @@ int	philoeat(t_data *data, t_philo *philo)
 	drop_fork(philo);
 	return (update_eat_time(data, philo));
 }
-
-// int	philoeat(t_data *data, t_philo *philo)
-// {
-// 	time_t	start;
-// 	int		i;
-// 	time_t	now;
-
-// 	now = now_time();
-// 	i = philo->num;
-// 	if (take_fork(data, philo))
-// 		return (true);
-// 	if (printmessage(data, philo, "is eating"))
-// 	{
-// 		drop_fork(philo);
-// 		return (true);
-// 	}
-// 	start = now_time();
-// 	pthread_mutex_lock(&data->m_philo[i]);
-// 	philo->last_eat = start;
-// 	pthread_mutex_unlock(&data->m_philo[i]);
-// 	while (now_time() - start < data->eat_time)
-// 		usleep(100);
-// 	if (data->counter)
-// 	{
-// 		pthread_mutex_lock(&data->m_philo[i]);
-// 		philo->eat_time++;
-// 		pthread_mutex_unlock(&data->m_philo[i]);
-// 	}
-// 	drop_fork(philo);
-// 	return (false);
-// }
 
 int	philosleep(t_data *data, t_philo *philo)
 {

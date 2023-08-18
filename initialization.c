@@ -6,7 +6,7 @@
 /*   By: rnaka <rnaka@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 23:01:54 by rnaka             #+#    #+#             */
-/*   Updated: 2023/08/18 23:15:58 by rnaka            ###   ########.fr       */
+/*   Updated: 2023/08/19 01:59:10 by rnaka            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,19 @@ void	philo_thread(t_data *data)
 		i++;
 	}
 	pthread_join(thread_monitor, NULL);
+}
+
+void	destroy_all(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->num)
+	{
+		pthread_mutex_destroy(&data->m_philo[i]);
+		pthread_mutex_destroy(&data->fork[i]);
+		i++;
+	}
+	pthread_mutex_destroy(&data->print);
+	pthread_mutex_destroy(&data->finish);
 }
