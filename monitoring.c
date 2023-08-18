@@ -30,7 +30,7 @@ int	check(t_data *data)
 bool	num_eat(t_data *data)
 {
 	int	i;
-
+	
 	i = 0;
 	while (i < data->num)
 	{

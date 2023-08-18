@@ -2,7 +2,7 @@ NAME	= philosophers
 
 CC	= gcc
 
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra #-Werror
 
 INC	= -I.
 
@@ -37,5 +37,8 @@ fclean: clean
 	$(RM) $(NAME)
 
 re:	fclean all
+
+debug:	CFLAGS += -fsanitize=thread
+debug:	re
 
 .PHONY: all clean fclean re

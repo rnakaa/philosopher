@@ -10,6 +10,7 @@ void	reset(t_data *data)
 	i = 0;
 	data->stop = false;
 	pthread_mutex_init(&data->print, NULL);
+	pthread_mutex_init(&data->finish, NULL);
 	while (i < data->num)
 	{
 		data->philo[i].num = i;
