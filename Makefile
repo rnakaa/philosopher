@@ -2,9 +2,9 @@ NAME	= philosophers
 
 CC	= gcc
 
-#CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra #-Werror
 
-INC	= -I./philospphers.h
+INC	= -I.
 
 OBJ_DIR	= obj
 
@@ -12,7 +12,13 @@ OBJS	= $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 RM	= rm -rf
 
-SRCS	= main.c
+SRCS	=	fork_actions.c	\
+		initialization.c	\
+		main.c	\
+		message_utils.c	\
+		monitoring.c	\
+		philo_actions.c	\
+		time_utils.c
 
 all:	$(NAME)
 
@@ -21,7 +27,7 @@ $(OBJ_DIR)/%.o: %.c
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS)	-o $(NAME) $(OBJS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
 
 clean:
 	$(RM) $(OBJS)
@@ -31,5 +37,8 @@ fclean: clean
 	$(RM) $(NAME)
 
 re:	fclean all
+
+debug:	CFLAGS += -fsanitize=thread
+debug:	re
 
 .PHONY: all clean fclean re
